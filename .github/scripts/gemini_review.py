@@ -51,7 +51,8 @@ def get_diff_from_env():
 
 def call_gemini_api(api_key, diff_content):
     """Call Gemini API with the diff and return review."""
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+    # Try gemini-1.5-flash first (may have different quotas), fallback to gemini-2.0-flash
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
     review_prompt = f"""You are a professional code reviewer. Please review the following code diff and provide constructive feedback.
 
