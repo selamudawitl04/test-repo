@@ -51,7 +51,7 @@ def get_diff_from_env():
 
 def call_gemini_api(api_key, diff_content):
     """Call Gemini API with the diff and return review."""
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
     review_prompt = f"""You are a professional code reviewer. Please review the following code diff and provide constructive feedback.
 
@@ -113,6 +113,10 @@ Please provide a professional but friendly review. If there are no issues, say s
 
     except urllib.error.HTTPError as e:
         error_body = e.read().decode('utf-8')
+        if e.code == 429:
+            return "⚠️ **Rate Limit Exceeded**\n\nYou've hit the Gemini free tier daily quota (1,500 requests/day). The quota resets at midnight UTC.\n\n**Solutions:**\n- ✅ Try again tomorrow\n- 💳 [Enable paid billing](https://aistudio.google.com/) for unlimited access\n- 🆕 Use a fresh API key from a new Google project"
+        elif e.code == 404:
+            return "❌ **Model Not Found**\n\nThe Gemini model is not available. Try updating the model ID in `.github/scripts/gemini_review.py`."
         return f"ERROR: Gemini API call failed with status {e.code}: {error_body}"
     except urllib.error.URLError as e:
         return f"ERROR: Network error calling Gemini API: {e.reason}"
