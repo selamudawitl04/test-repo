@@ -1,0 +1,10 @@
+review_result.txt
+*.pyc
+__pycache__/
+.DS_Store
+*.swp
+*.swo
+*~
+.env
+.env.local
+*.log

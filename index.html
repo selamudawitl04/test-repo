@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page for Code Review</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .warning { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Test Page</h1>
+    <p>This page contains some intentional issues for the AI code reviewer to find.</p>
+
+    <!-- Issue 1: Missing alt text on image -->
+    <img src="test.jpg" width="200" height="150">
+
+    <!-- Issue 2: Deprecated <center> tag -->
+    <center>
+        <h2>This text is centered using a deprecated tag</h2>
+    </center>
+
+    <!-- Issue 3: Inline onclick handler (XSS-prone pattern) -->
+    <button onclick="alert('You clicked me!')">Click Me</button>
+
+    <!-- Issue 4: Using innerHTML with unsanitized input -->
+    <div id="content"></div>
+    <script>
+        const userInput = "<img src=x onerror='alert(\"XSS\")'>";
+        document.getElementById('content').innerHTML = userInput;
+    </script>
+
+    <!-- Issue 5: Deprecated <font> tag -->
+    <p><font color="blue">This text uses a deprecated font tag</font></p>
+
+    <footer>
+        <p class="warning">This is a test page with intentional code quality issues.</p>
+    </footer>
+</body>
+</html>
